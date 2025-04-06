@@ -1,0 +1,100 @@
+<html>
+
+<head>
+	<title>Charter Authority</title>
+</head>
+
+<body>
+	<h1>Progress</h1>
+	<p>Here's how you're doing so far:</p>
+
+	<p>
+		<% if (progress>= 1) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Token Exchange
+					<% if (progress===0) { %>
+						<a href="//tokenexchange.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 2) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Livery
+					<% if (progress===1) { %>
+						<a href="//livery.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 3) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Wagon Repair
+					<% if (progress===2) { %>
+						<a href="//wagonrepair.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 4) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					General Store
+					<% if (progress===3) { %>
+						<a href="//generalstore.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 5) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Bandit Negotiation
+					<% if (progress===4) { %>
+						<a href="//banditnegotiation.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 6) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Inn
+					<% if (progress===5) { %>
+						<a href="//inn.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<p>
+		<% if (progress>= 7) { %>
+			<input type="checkbox" checked disabled />
+			<% } else { %>
+				<input type="checkbox" disabled />
+				<% } %>
+					Bank
+					<% if (progress===6) { %>
+						<a href="//bank.<%= domain %>/enter?jwt=<%= jwt %>">Go there</a>
+						<% } %>
+	</p>
+
+	<% if (progress===7) { %>
+		<p><a href="//trailhead.<%= domain %>/go?jwt=<%= jwt %>">Hit the open trail!</a></p>
+		<% } %>
+</body>
+
+</html>

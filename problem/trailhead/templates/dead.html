@@ -1,0 +1,48 @@
+<html>
+
+<head>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		h1 {
+			color: #8B0000;
+		}
+
+		.death-message {
+			font-size: 1.2em;
+			margin-bottom: 20px;
+		}
+
+		.journey-log {
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			padding: 15px;
+			border-radius: 5px;
+		}
+
+		.log-entry {
+			margin-bottom: 8px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>{{ title|default("You died") }}</h1>
+	<p class="death-message">{{message}}</p>
+
+	{% if log %}
+	<h2>Journey Log</h2>
+	<div class="journey-log">
+		{% for entry in log %}
+		<div class="log-entry">{{ entry }}</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<html>
+	<head>
+		<style>
+			.repair-section { margin: 20px 0; }
+			.component-group { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+			.score { color: #666; }
+			.spares-section { background: #f5f5f5; padding: 15px; margin: 20px 0; }
+		</style>
+	</head>
+	<body>
+		<h1>Oregon Trail Wagon Repair Shop</h1>
+
+		<form action="/submit" method="post">
+			<input type="hidden" value="<%= token %>" name="jwt" />
+
+			<div class="spares-section">
+				<h2>Purchase Spare Parts</h2>
+				<p>Available tokens: <%= payload['tokens'] %></p>
+				<div class="component-group">
+					<h3>Spare Wheels ($15 each)</h3>
+					<input type="number" name="spares[wheels]" min="0" value="0" />
+					Current spares: <%= payload['wheels'] || 0 %>
+				</div>
+				<div class="component-group">
+					<h3>Spare Axles ($30 each)</h3>
+					<input type="number" name="spares[axles]" min="0" value="0" />
+					Current spares: <%= payload['axles'] || 0 %>
+				</div>
+				<div class="component-group">
+					<h3>Spare Covers ($35 each)</h3>
+					<input type="number" name="spares[covers]" min="0" value="0" />
+					Current spares: <%= payload['covers'] || 0 %>
+				</div>
+			</div>
+
+			<div class="repair-section">
+				<h2>Wheels</h2>
+				<% ['frontLeft', 'frontRight', 'backLeft', 'backRight'].each do |wheel| %>
+					<div class="component-group">
+						<h3><%= wheel.gsub(/([A-Z])/, ' \1').capitalize %> Wheel</h3>
+						<span class="score">Current condition: <%= payload['wagon']['wheels'][wheel] %></span><br>
+						<select name="wheels[<%= wheel %>]">
+							<option value="">No action</option>
+							<option value="repair">Repair ($<%= repair_prices['wheels'] %>)</option>
+							<option value="replace">Replace ($<%= new_prices['wheels'] %>)</option>
+						</select>
+					</div>
+				<% end %>
+			</div>
+
+			<div class="repair-section">
+				<h2>Axles</h2>
+				<% ['front', 'back'].each do |axle| %>
+					<div class="component-group">
+						<h3><%= axle.capitalize %> Axle</h3>
+						<span class="score">Current condition: <%= payload['wagon']['axles'][axle] %></span><br>
+						<select name="axles[<%= axle %>]">
+							<option value="">No action</option>
+							<option value="repair">Repair ($<%= repair_prices['axles'] %>)</option>
+							<option value="replace">Replace ($<%= new_prices['axles'] %>)</option>
+						</select>
+					</div>
+				<% end %>
+			</div>
+
+			<div class="repair-section">
+				<h2>Wagon Cover</h2>
+				<div class="component-group">
+					<span class="score">Current condition: <%= payload['wagon']['cover'] %></span><br>
+					<select name="cover">
+						<option value="">No action</option>
+						<option value="repair">Repair ($<%= repair_prices['covers'] %>)</option>
+						<option value="replace">Replace ($<%= new_prices['covers'] %>)</option>
+					</select>
+				</div>
+			</div>
+
+			<input type="submit" value="Perform Repairs & Purchase Parts" />
+		</form>
+	</body>
+</html>

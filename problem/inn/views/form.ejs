@@ -1,0 +1,128 @@
+<html>
+
+<head>
+	<title>Inn</title>
+</head>
+
+<body>
+	<h1>Inn</h1>
+	<p>Welcome to town! You fixin' to spend the night in a real bed?</p>
+	<form id="no">
+		<button type="submit" formaction="/submit">No thanks, I'll sleep under the stars.</button>
+	</form>
+	<form id="yes">
+		<p>Yes...</p>
+		<p>
+			<label for="checkout-date">When are you checking out? Today is <%= config.today.toDateString() %>.</label>
+			<input type="date" id="checkout-date" name="checkout-date"
+				value="<%= config.today.toISOString().split('T')[0] %>"
+				min="<%= config.today.toISOString().split('T')[0] %>"
+				max="<%= config.latestCheckout.toISOString().split('T')[0] %>" />
+		</p>
+		<p>
+			<label for="room-type">What kind of room are you looking for?</label>
+			<select id="room-type" name="room-type">
+				<% for (let i=0; i < config.roomInfo.length; i++) { %>
+					<option value="<%= i %>">
+						<%= config.roomInfo[i].name %> - <%= config.roomInfo[i].price %> tokens per
+								night
+					</option>
+					<% } %>
+			</select>
+		</p>
+		<p id="cost-info">Please select a checkout date.</p>
+		<button type="submit" id="submit">Yes, I'll take a room.</button>
+	</form>
+</body>
+
+<script type="module">
+	import * as JSON from "/jsonx.js";
+
+	const today = new Date("<%= config.today.toISOString() %>");
+	const latestCheckout = new Date("<%= config.latestCheckout.toISOString() %>");
+	const roomInfo = JSON.parse(`<%- JSON.stringify(config.roomInfo) %>`);
+	const jwt = "<%= token %>";
+	const tokens = JSON.parse("<%= payload.tokens %>");
+
+	function updatePrice() {
+		const checkoutDate = new Date(document.getElementById("checkout-date").value);
+		const roomType = document.getElementById("room-type").value;
+
+		const costInfoElement = document.getElementById("cost-info");
+		const submitButton = document.getElementById("submit");
+
+		if (checkoutDate <= today) {
+			document.getElementById("cost-info").textContent = "Please select a future date.";
+			submitButton.disabled = true;
+			return;
+		}
+
+		if (checkoutDate > latestCheckout) {
+			document.getElementById("cost-info").textContent = "Please select a date before " + latestCheckout.toDateString() + ".";
+			submitButton.disabled = true;
+			return;
+		}
+
+		const nights = Math.ceil((checkoutDate - today) / (1000 * 60 * 60 * 24));
+		const total = nights * roomInfo[roomType].price;
+		document.getElementById("cost-info").innerText = `You'll be staying for ${nights} nights at ${roomInfo[roomType].price} tokens per night, for a total of ${total} tokens.`;
+
+		if (total > tokens) {
+			submitButton.disabled = true;
+			submitButton.innerText = "You don't have enough tokens.";
+		} else {
+			submitButton.disabled = false;
+			submitButton.innerText = "Yes, I'll take a room.";
+		}
+	}
+
+	updatePrice();
+
+	document.getElementById("checkout-date").addEventListener("change", updatePrice);
+	document.getElementById("room-type").addEventListener("change", updatePrice);
+
+	document.getElementById("no").addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const response = await fetch("/submit", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/jsonx"
+			},
+			body: JSON.stringify({
+				jwt,
+				stay: false
+			}),
+		});
+		if (response.ok) {
+			window.location = (await response.json()).next;
+		} else {
+			alert(await response.text());
+		}
+	});
+
+	document.getElementById("yes").addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const checkoutDate = new Date(document.getElementById("checkout-date").value);
+		const roomType = parseInt(document.getElementById("room-type").value);
+		const response = await fetch("/submit", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/jsonx"
+			},
+			body: JSON.stringify({
+				jwt,
+				stay: true,
+				checkoutDate,
+				roomType
+			}),
+			redirect: "manual"
+		});
+		if (response.ok) {
+			window.location = (await response.json()).next;
+		} else {
+			alert(await response.text());
+		}
+	});
+</script>
+
+</html>

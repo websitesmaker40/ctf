@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Token Exchange</title>
+</head>
+
+<body>
+	<h1>Token Exchange</h1>
+	<form action="/submit" method="POST">
+		<h2>Sell Items</h2>
+		<div th:each="possession, iterStat : ${claims.possessions}">
+			<input type="checkbox" th:name="'item_' + ${iterStat.index}" th:value="${iterStat.index}"
+				th:text="${possession}" />
+			<br />
+		</div>
+
+		<h2>Sell Gold</h2>
+		<input type="number" name="gold_amount" th:max="${claims.gold}" min="0" />
+		<span th:text="'(You have ' + ${claims.gold} + ' gold)'"></span>
+		<br />
+
+		<input type="submit" value="Sell" />
+	</form>
+</body>
+
+</html>

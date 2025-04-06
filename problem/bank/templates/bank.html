@@ -1,0 +1,13 @@
+<html>
+
+<body>
+	<h1>Welcome to the bank</h1>
+	<p>You can exchange up to {{payload.tokens}} tokens for gold, at a rate of {{rate}} tokens per gold.</p>
+	<form action="/submit" method="post">
+		<input type="hidden" value="{{token}}" name="token">
+		<input type="number" name="amount" min="0" max="{{payload.tokens}}" required>
+		<input type="submit" value="Exchange">
+	</form>
+</body>
+
+</html>

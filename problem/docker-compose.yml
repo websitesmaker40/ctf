@@ -1,0 +1,99 @@
+services:
+  charter-authority:
+    image: trading-post/charter-authority
+    build:
+      context: ./charter-authority
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  token-exchange:
+    image: trading-post/token-exchange
+    build:
+      context: ./token-exchange
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  livery:
+    image: trading-post/livery
+    build:
+      context: ./livery
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  wagon-repair:
+    image: trading-post/wagon-repair
+    build:
+      context: ./wagon-repair
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  general-store:
+    image: trading-post/general-store
+    build:
+      context: ./general-store
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  bandit-negotiation:
+    image: trading-post/bandit-negotiation
+    build:
+      context: ./bandit-negotiation
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  inn:
+    image: trading-post/inn
+    build:
+      context: ./inn
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  bank:
+    image: trading-post/bank
+    build:
+      context: ./bank
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+  trailhead:
+    image: trading-post/trailhead
+    build:
+      context: ./trailhead
+    restart: always
+    environment:
+      - HOST
+    secrets:
+      - jwt_secret
+      - flag
+  nginx:
+    image: trading-post/nginx
+    build:
+      context: ./nginx
+    restart: always
+    environment:
+      - HOST
+    ports:
+      - "80:80"
+    depends_on:
+      - charter-authority
+secrets:
+  jwt_secret:
+    file: ./jwt_secret
+  flag:
+    file: ./flag

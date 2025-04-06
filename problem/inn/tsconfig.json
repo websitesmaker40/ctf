@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2024",
+		"jsx": "react",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext",
+		"types": [],
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+    "outDir": "./dist"
+	}
+}

@@ -1,0 +1,10 @@
+{
+  "today": Date("1865-04-04T00:00:00.000Z"),
+  "latestCheckout": Date("1865-04-11T00:00:00.000Z"),
+  "roomInfo": [
+    { "name": "Single", "price": 100 },
+    { "name": "Double", "price": 150 },
+    { "name": "Suite", "price": 200 },
+    { "name": "Penthouse", "price": 400 }
+  ]
+}
