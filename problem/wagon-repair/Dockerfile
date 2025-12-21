@@ -1,4 +1,4 @@
-FROM ruby:3.4.1-bookworm
+FROM ruby:3.4.8-bookworm
 
 ENV APP_ENV production
 ENV RACK_ENV production
